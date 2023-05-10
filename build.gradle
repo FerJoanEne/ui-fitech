@@ -28,6 +28,7 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     implementation 'com.intellij:forms_rt:7.0.3'
     implementation 'com.github.FerJoanEne:core-fitech:v3.0.9'
+    implementation 'com.github.TahielGiordana:puntajes-fitech:0c51fb0e78'
     implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
 

@@ -4,6 +4,7 @@ import interfaces.Observer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import services.ScoreService;
 import services.ValidationEngine;
 import views.Home;
 
@@ -18,12 +19,14 @@ public class HomeController implements Observer {
 
     private Logger log = LogManager.getLogger("HomeController");
     private final ValidationEngine validationEngine;
+    private final ScoreService scoreService;
     private final Home home;
 
-    public HomeController(Home home, ValidationEngine validationEngine){
+    public HomeController(Home home, ValidationEngine validationEngine, ScoreService scoreService){
         log.info("se crea el componente {}", HomeController.class.getName());
         this.home = home;
         this.validationEngine = validationEngine;
+        this.scoreService = scoreService;
     }
 
     public void startValidationTask(){
@@ -89,6 +92,7 @@ public class HomeController implements Observer {
         if(result){
             resultLabel.setText("Puede utilizar la máquina");
             resultLabel.setForeground(Color.GREEN);
+            scoreService.addScore(home.getUserNameTextField().getText(), 50);
         }else{
             resultLabel.setText("No puede utilizar la máquina");
             resultLabel.setForeground(Color.RED);

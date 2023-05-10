@@ -7,6 +7,7 @@ import java.awt.*;
 //custom imports
 import core.Core;
 import frontControllers.HomeController;
+import services.ScoreService;
 import services.ValidationEngine;
 
 
@@ -30,11 +31,11 @@ public class Home extends JFrame {
     private HomeController homeController;
     private Core core;
 
-    public Home(Core core) {
+    public Home(Core core, ScoreService scoreService) {
         super(TITLE);
         this.core = core;
         ValidationEngine validationEngine = core.getValidatorManager();
-        homeController = new HomeController(this, validationEngine);
+        homeController = new HomeController(this, validationEngine, scoreService);
         validationEngine.addObserver(homeController);
 
         createUIComponents();
