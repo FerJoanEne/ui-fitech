@@ -22,19 +22,24 @@ public class HomeController implements Observer {
     private final ScoreService scoreService;
     private final Home home;
 
+    private Timer timer;
+
     public HomeController(Home home, ValidationEngine validationEngine, ScoreService scoreService){
         log.info("se crea el componente {}", HomeController.class.getName());
         this.home = home;
         this.validationEngine = validationEngine;
         this.scoreService = scoreService;
+        this.timer = new Timer();
     }
 
     public void startValidationTask(){
-        Timer t = new Timer();
-        t.schedule(new TimerTask() {
+        timer = new Timer();
+        JTextField user = home.getUserNameTextField();
+        JTextField machine = home.getMachineSerialCodeTextField();
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                post(validationEngine.getActualUserName(), validationEngine.getActualMachineCode());
+                post(user.getText(), machine.getText());
             }
         }, 0, 3000);
     }
@@ -46,41 +51,53 @@ public class HomeController implements Observer {
     public void setUpActions() {
         JTextField user = home.getUserNameTextField();
         JTextField machine = home.getMachineSerialCodeTextField();
+        JButton validatorBtn = home.getValidatorBtn();
+        JLabel resultLabel = home.getResultLabel();
         user.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 log.info("metodo insertUpdate: {} {}",user.getText(),machine.getText() );
-                post(user.getText(),machine.getText());
+                resultLabel.setText("");
+                timer.cancel();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 log.info("metodo removeUpdate: {} {}",user.getText(),machine.getText() );
-                post(user.getText(),machine.getText());
+                resultLabel.setText("");
+                timer.cancel();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
                 log.info("metodo changedUpdate: {} {}",user.getText(),machine.getText() );
-                post(user.getText(),machine.getText());
+                resultLabel.setText("");
+                timer.cancel();
             }
         });
 
         machine.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                post(user.getText(),machine.getText());
+                resultLabel.setText("");
+                timer.cancel();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                post(user.getText(),machine.getText());
+                resultLabel.setText("");
+                timer.cancel();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                post(user.getText(),machine.getText());
+                resultLabel.setText("");
+                timer.cancel();
             }
+        });
+
+        validatorBtn.addActionListener(e -> {
+            startValidationTask();
         });
     }
 

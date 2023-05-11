@@ -13,7 +13,7 @@ import services.ValidationEngine;
 
 public class Home extends JFrame {
     private static final int MIN_WIDTH = 600;
-    private static final int MIN_HEIGHT = 500;
+    private static final int MIN_HEIGHT = 600;
     private static final Color PRIMARY_COLOR = new Color(230, 230, 230);
     private static final Color SECONDARY_COLOR = new Color(50, 50, 50);
     private static final Color ACCENT_COLOR = new Color(200, 50, 50);
@@ -27,6 +27,8 @@ public class Home extends JFrame {
     private JTextField machineSerialCodeTextField;
     private JLabel resultLabel;
 
+    private JButton validatorBtn;
+
     // Controlador
     private HomeController homeController;
     private Core core;
@@ -35,19 +37,20 @@ public class Home extends JFrame {
         super(TITLE);
         this.core = core;
         ValidationEngine validationEngine = core.getValidatorManager();
+        createUIComponents();
         homeController = new HomeController(this, validationEngine, scoreService);
         validationEngine.addObserver(homeController);
 
-        createUIComponents();
+
         homeController.setUpActions();
-        homeController.startValidationTask();
+        setVisible(true);
     }
 
     private void createUIComponents() {
         setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+
 
         contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
@@ -114,6 +117,21 @@ public class Home extends JFrame {
         resultPanel.setLayout(resultLayout);
         resultPanel.add(resultLabel);
 
+        validatorBtn = new JButton("Ingresar");
+        validatorBtn.setForeground(ACCENT_COLOR);
+        validatorBtn.setBackground(PRIMARY_COLOR);
+        validatorBtn.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(ACCENT_COLOR, 2),
+                BorderFactory.createEmptyBorder(5, 20, 5, 20)
+        ));
+        validatorBtn.setFont(FORM_FONT);
+
+        JPanel buttonWrapper = new JPanel();
+        buttonWrapper.setBackground(null);
+        buttonWrapper.setLayout(new FlowLayout());
+        buttonWrapper.add(validatorBtn);
+        resultPanel.add(buttonWrapper);
+
         contentPanel.add(titlePanel, BorderLayout.NORTH);
         contentPanel.add(formPanel, BorderLayout.CENTER);
         contentPanel.add(resultPanel, BorderLayout.SOUTH);
@@ -123,6 +141,10 @@ public class Home extends JFrame {
 
     public JLabel getResultLabel(){
         return this.resultLabel;
+    }
+
+    public JButton getValidatorBtn(){
+        return this.validatorBtn;
     }
 
     public JTextField getUserNameTextField(){
