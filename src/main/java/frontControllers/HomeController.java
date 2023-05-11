@@ -11,7 +11,9 @@ import views.Home;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -108,6 +110,22 @@ public class HomeController implements Observer {
         });
     }
 
+    public void updateScoreTable(){
+        //Lleno tabla score
+        DefaultTableModel scoreTableModel = home.getScoreTableModel();
+        Map<String,Integer> scores = scoreService.getAllScores();
+
+        scoreTableModel.setRowCount(0);
+        scoreTableModel.setColumnCount(0);
+        scoreTableModel.setColumnIdentifiers(new Object[]{"User","Score"});
+        for(Map.Entry entry : scores.entrySet()){
+            String user = entry.getKey().toString();
+            String score = entry.getValue().toString();
+            Object[] row = {user,score};
+            scoreTableModel.addRow(row);
+        }
+    }
+
     @Override
     public void update() {
         JLabel resultLabel = home.getResultLabel();
@@ -121,6 +139,8 @@ public class HomeController implements Observer {
             resultLabel.setText("No puede utilizar la máquina");
             resultLabel.setForeground(Color.RED);
         }
+        updateScoreTable();
+
     }
 
 }

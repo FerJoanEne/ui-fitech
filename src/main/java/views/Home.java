@@ -2,7 +2,9 @@ package views;
 
 //java
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+
 
 //custom imports
 import core.Core;
@@ -13,12 +15,14 @@ import services.ValidationEngine;
 
 public class Home extends JFrame {
     private static final int MIN_WIDTH = 600;
-    private static final int MIN_HEIGHT = 600;
+    private static final int MIN_HEIGHT = 800;
     private static final Color PRIMARY_COLOR = new Color(230, 230, 230);
     private static final Color SECONDARY_COLOR = new Color(50, 50, 50);
     private static final Color ACCENT_COLOR = new Color(200, 50, 50);
     private static final Font TITLE_FONT = new Font("Poppins", Font.BOLD, 48);
     private static final Font FORM_FONT = new Font("Poppins", Font.PLAIN, 24);
+
+    private static final Font SCORE_FONT = new Font("Poppins", Font.PLAIN, 18);
     private static final String TITLE = "Fitech";
 
     // Componentes de la interfaz gráfica
@@ -26,8 +30,9 @@ public class Home extends JFrame {
     private JTextField userNameTextField;
     private JTextField machineSerialCodeTextField;
     private JLabel resultLabel;
-
     private JButton validatorBtn;
+
+    private DefaultTableModel scoreModel;
 
     // Controlador
     private HomeController homeController;
@@ -41,8 +46,8 @@ public class Home extends JFrame {
         homeController = new HomeController(this, validationEngine, scoreService);
         validationEngine.addObserver(homeController);
 
-
         homeController.setUpActions();
+        homeController.updateScoreTable();
         setVisible(true);
     }
 
@@ -50,7 +55,6 @@ public class Home extends JFrame {
         setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
         contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
@@ -105,6 +109,17 @@ public class Home extends JFrame {
         machineWrapper.add(machineSerialCodeTextField);
         formPanel.add(machineWrapper);
 
+        JScrollPane scorePanel = new JScrollPane();
+        formPanel.add(scorePanel);
+
+        scoreModel = new DefaultTableModel(null, new String[] {"User", "Score"});
+        JTable scoreTable = new JTable(scoreModel);
+        scoreTable.setFont(SCORE_FONT);
+        scoreTable.setRowHeight(SCORE_FONT.getSize() + 4);
+        scoreTable.getTableHeader().setFont(SCORE_FONT);
+
+        scorePanel.setViewportView(scoreTable);
+
         resultLabel = new JLabel("");
         resultLabel.setForeground(ACCENT_COLOR);
         resultLabel.setFont(FORM_FONT);
@@ -157,6 +172,10 @@ public class Home extends JFrame {
 
     public Core getCore(){
         return this.core;
+    }
+
+    public DefaultTableModel getScoreTableModel(){
+        return this.scoreModel;
     }
 
 }
