@@ -29,7 +29,7 @@ public class Home extends JFrame {
     private JPanel contentPanel;
     private JTextField userNameTextField;
     private JTextField machineSerialCodeTextField;
-    private JLabel resultLabel;
+    private JTextArea resultLabel;
     private JButton validatorBtn;
 
     private DefaultTableModel scoreModel;
@@ -80,7 +80,7 @@ public class Home extends JFrame {
         userNameTextField.setForeground(SECONDARY_COLOR);
         userNameTextField.setBackground(PRIMARY_COLOR);
         userNameTextField.setFont(FORM_FONT);
-        userNameTextField.setColumns(20);
+        userNameTextField.setColumns(10);
         userNameTextField.setMargin(new Insets(2, 5, 2, 5));
 
         JPanel nameWrapper = new JPanel();
@@ -99,7 +99,7 @@ public class Home extends JFrame {
         machineSerialCodeTextField.setForeground(SECONDARY_COLOR);
         machineSerialCodeTextField.setBackground(PRIMARY_COLOR);
         machineSerialCodeTextField.setFont(FORM_FONT);
-        machineSerialCodeTextField.setColumns(20);
+        machineSerialCodeTextField.setColumns(10);
         machineSerialCodeTextField.setMargin(new Insets(2, 5, 2, 5));
 
         JPanel machineWrapper = new JPanel();
@@ -110,7 +110,6 @@ public class Home extends JFrame {
         formPanel.add(machineWrapper);
 
         JScrollPane scorePanel = new JScrollPane();
-        formPanel.add(scorePanel);
 
         scoreModel = new DefaultTableModel(null, new String[] {"User", "Score"});
         JTable scoreTable = new JTable(scoreModel);
@@ -120,17 +119,22 @@ public class Home extends JFrame {
 
         scorePanel.setViewportView(scoreTable);
 
-        resultLabel = new JLabel("");
-        resultLabel.setForeground(ACCENT_COLOR);
-        resultLabel.setFont(FORM_FONT);
-        resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        resultLabel.setVerticalAlignment(SwingConstants.CENTER);
 
+        resultLabel = new JTextArea();
+        resultLabel.setBackground(SECONDARY_COLOR);
+        resultLabel.setForeground(ACCENT_COLOR);
+        resultLabel.setFont(SCORE_FONT);
+        resultLabel.setBorder(null);
+        resultLabel.setColumns(15);
+        resultLabel.setEditable(false);
+
+        JScrollPane scrollResultPanel = new JScrollPane(resultLabel);
+        scrollResultPanel.setBorder(null);
         JPanel resultPanel = new JPanel();
-        GridLayout resultLayout = new GridLayout(3, 1);
+        GridLayout resultLayout = new GridLayout(1, 1);
         resultPanel.setBackground(null);
         resultPanel.setLayout(resultLayout);
-        resultPanel.add(resultLabel);
+        resultPanel.add(scrollResultPanel);
 
         validatorBtn = new JButton("Ingresar");
         validatorBtn.setForeground(ACCENT_COLOR);
@@ -145,16 +149,17 @@ public class Home extends JFrame {
         buttonWrapper.setBackground(null);
         buttonWrapper.setLayout(new FlowLayout());
         buttonWrapper.add(validatorBtn);
-        resultPanel.add(buttonWrapper);
+        formPanel.add(buttonWrapper);
 
         contentPanel.add(titlePanel, BorderLayout.NORTH);
         contentPanel.add(formPanel, BorderLayout.CENTER);
-        contentPanel.add(resultPanel, BorderLayout.SOUTH);
+        contentPanel.add(resultPanel, BorderLayout.EAST);
+        contentPanel.add(scorePanel,BorderLayout.SOUTH);
 
         setContentPane(contentPanel);
     }
 
-    public JLabel getResultLabel(){
+    public JTextArea getResultLabel(){
         return this.resultLabel;
     }
 

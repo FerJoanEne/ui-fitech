@@ -54,7 +54,7 @@ public class HomeController implements Observer {
         JTextField user = home.getUserNameTextField();
         JTextField machine = home.getMachineSerialCodeTextField();
         JButton validatorBtn = home.getValidatorBtn();
-        JLabel resultLabel = home.getResultLabel();
+        JTextArea resultLabel = home.getResultLabel();
         user.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -128,17 +128,26 @@ public class HomeController implements Observer {
 
     @Override
     public void update() {
-        JLabel resultLabel = home.getResultLabel();
-        Boolean result = home.getCore().getValidatorManager().getValidationResult();
-        log.info("metodo update - result: {} ", result);
-        if(result){
+        JTextArea resultLabel = home.getResultLabel();
+        Map<String, Boolean> validatorsResult = home.getCore().getValidatorManager().getValidationResult();
+        String labelText = "No puede usar la máquina";
+        Boolean finalResult = true;
+        for(Map.Entry<String,Boolean> entry : validatorsResult.entrySet()){
+            if(!entry.getValue()){
+                labelText += "\n" + entry.getKey() + " Falló";
+                System.out.println(labelText);
+                resultLabel.setText(labelText);
+                finalResult = false;
+            }
+        }
+        if(finalResult){
             resultLabel.setText("Puede utilizar la máquina");
             resultLabel.setForeground(Color.GREEN);
             scoreService.addScore(home.getUserNameTextField().getText(), 50);
         }else{
-            resultLabel.setText("No puede utilizar la máquina");
             resultLabel.setForeground(Color.RED);
         }
+        log.info("metodo update - result: {} ", finalResult);
         updateScoreTable();
 
     }
