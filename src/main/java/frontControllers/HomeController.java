@@ -59,6 +59,7 @@ public class HomeController implements Observer {
                 log.info("metodo insertUpdate: {} {}",user.getText(),machine.getText() );
                 resultLabel.setText("");
                 timer.cancel();
+                validatorBtn.setEnabled(true);
             }
 
             @Override
@@ -66,6 +67,7 @@ public class HomeController implements Observer {
                 log.info("metodo removeUpdate: {} {}",user.getText(),machine.getText() );
                 resultLabel.setText("");
                 timer.cancel();
+                validatorBtn.setEnabled(true);
             }
 
             @Override
@@ -73,6 +75,7 @@ public class HomeController implements Observer {
                 log.info("metodo changedUpdate: {} {}",user.getText(),machine.getText() );
                 resultLabel.setText("");
                 timer.cancel();
+                validatorBtn.setEnabled(true);
             }
         });
 
@@ -81,23 +84,27 @@ public class HomeController implements Observer {
             public void insertUpdate(DocumentEvent e) {
                 resultLabel.setText("");
                 timer.cancel();
+                validatorBtn.setEnabled(true);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 resultLabel.setText("");
                 timer.cancel();
+                validatorBtn.setEnabled(true);
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
                 resultLabel.setText("");
                 timer.cancel();
+                validatorBtn.setEnabled(true);
             }
         });
 
         validatorBtn.addActionListener(e -> {
             startValidationTask();
+            validatorBtn.setEnabled(false);
         });
     }
 
