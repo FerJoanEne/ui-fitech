@@ -1,6 +1,7 @@
 package views;
 
 //java
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -105,15 +106,15 @@ public class Home extends JFrame {
         setContentPane(contentPanel);
     }
 
-    public JLabel getResultLabel(){
+    public JLabel getResultLabel() {
         return this.resultLabel;
     }
 
-    public JTextField getUserNameTextField(){
+    public JTextField getUserNameTextField() {
         return this.userNameTextField;
     }
 
-    public JButton getValidatorBtn(){
+    public JButton getValidatorBtn() {
         return this.validatorBtn;
     }
 }

@@ -4,6 +4,7 @@ logs
 /logs
 /.gradle/*
 /build
+/bin
 out/*
 build/classes/java/main/
 lib

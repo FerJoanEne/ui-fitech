@@ -3,13 +3,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import views.Home;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Application {
     private static final Logger log = LogManager.getLogger("Application");
 
-    public static void main(String[] args) {
-        if(args.length < 2){
+    public static void main(String[] args) throws FileNotFoundException {
+        if (args.length < 2) {
             log.info("Debe proporcionar el path al directorio y el código de la máquina");
             System.exit(0);
         }
