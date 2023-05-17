@@ -15,44 +15,46 @@ import java.awt.*;
 
 public class HomeController implements Observer {
 
-    private final Logger log = LogManager.getLogger("HomeController");
+    private static final Logger log = LogManager.getLogger("HomeController");
     private final ValidationTask validationTask;
     private final Home home;
-    private Boolean isButtonEnabled;
+    private boolean isButtonEnabled;
 
     public HomeController(Home home, CoreFitech coreFitech) {
         this.home = home;
         this.validationTask = coreFitech.subscribe(this);
-        setUpActions();
-        isButtonEnabled = true;
+        this.setUpActions();
+        this.isButtonEnabled = true;
     }
 
     public void setUpActions() {
         JTextField user = home.getUserNameTextField();
         JButton validatorBtn = home.getValidatorBtn();
         JLabel resultLabel = home.getResultLabel();
-        user.getDocument().addDocumentListener(new DocumentListener() {
+        DocumentListener documentListener = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                isButtonEnabled = true;
-                resultLabel.setText("");
-                validatorBtn.setEnabled(true);
+                enableButton();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                isButtonEnabled = true;
-                resultLabel.setText("");
-                validatorBtn.setEnabled(true);
+                enableButton();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
+                enableButton();
+            }
+
+            private void enableButton() {
                 isButtonEnabled = true;
                 resultLabel.setText("");
                 validatorBtn.setEnabled(true);
             }
-        });
+        };
+
+        user.getDocument().addDocumentListener(documentListener);
 
         validatorBtn.addActionListener(e -> {
             isButtonEnabled = false;
@@ -71,12 +73,9 @@ public class HomeController implements Observer {
         if (!isButtonEnabled) {
             System.out.println("\u001B[33mHome Controller Update\u001B[0m");
             log.info("metodo update - result: {} ", result);
-            if (result) {
-                resultLabel.setText("Puede utilizar la m�quina");
-                resultLabel.setForeground(Color.GREEN);
-            } else {
-                resultLabel.setText("No puede utilizar la m�quina");
-                resultLabel.setForeground(Color.RED);
+            if (result != null) {
+                resultLabel.setText(result ? "Puede utilizar la m�quina" : "No puede utilizar la m�quina");
+                resultLabel.setForeground(result ? Color.GREEN : Color.RED);
             }
         }
     }
