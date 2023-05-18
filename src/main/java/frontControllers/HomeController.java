@@ -22,7 +22,8 @@ public class HomeController implements Observer {
 
     public HomeController(Home home, CoreFitech coreFitech) {
         this.home = home;
-        this.validationTask = coreFitech.subscribe(this);
+        this.validationTask = coreFitech.getValidationTask();
+        this.validationTask.addObserver(this);
         this.setUpActions();
         this.isButtonEnabled = true;
     }
